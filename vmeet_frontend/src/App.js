@@ -28,23 +28,22 @@ const Routing = () => {
   // }, [])
   return (
     <Switch>
-      {/* <Route exact path='/'>
+      <Route exact path='/'>
         <Home />
-      </Route> */}
-      <Route path='/face'>
-        {' '}
-        <Verification />{' '}
       </Route>
-      <Route path='/:url'>
-        {' '}
-        <Video />{' '}
-      </Route>
-      <Route path='/signin'>
+      <Route exact path='/signin'>
         <Signin />
       </Route>
-      <Route path='/signup'>
+      <Route exact path='/signup'>
         <Signup />
       </Route>
+      <Route exact path='/face'>
+        <Verification />
+      </Route>
+      <Route exact path='/:url'>
+        <Video />
+      </Route>
+      
       {/* <Route exact path="/profile" >
        <Profile />
      </Route> */}

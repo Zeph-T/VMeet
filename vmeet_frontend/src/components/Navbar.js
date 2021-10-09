@@ -57,10 +57,10 @@ const Navbar = () => {
   }
     return (     
   <nav>
-  <div className="nav-wrapper white" >
+  <div className="nav-wrapper" style={{backgroundColor:'#091353'}} >
     <Link style={{
-      padding:"0px 0px 0px 20px"
-  }} to={state?"/":"/signin"} className="brand-logo left">V-meet</Link>
+      padding:"0px 0px 0px 20px", color:"white !important"}}
+       to={state?"/":"/signin"} className="brand-logo left">V-meet</Link>
     <ul id="nav-mobile" className="right">
       {renderList()}
     </ul>

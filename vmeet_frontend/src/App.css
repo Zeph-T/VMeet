@@ -1,30 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap');
 
+
+
 a{
-    color: black !important;
+    color: black ;
     font-family: 'Alata', sans-serif;
+}
+a:hover {
+    color:white !important;
 }
 
 .brand-logo,h2{
     font-family: 'Grand Hotel', cursive;
+    color:'white' !important;
 }
 .mycard{
     margin-top: 30px;
+
 }
 .auth-card{
     padding:20px;
     text-align: center;
     max-width: 400px;
-    margin: 10px auto;
+    margin: 5rem auto;
 }
-.input-field input[type=text]:focus {
+/* .input-field input[type=text]:focus {
     border-bottom: 1px solid rgb(20, 205, 238)  !important;
     box-shadow: 0 1px 0 0 rgb(20, 205, 238)  !important;
 }
 .input-field input[type=password]:focus {
     border-bottom: 1px solid rgb(20, 205, 238)  !important;
     box-shadow: 0 1px 0 0 rgb(20, 205, 238)  !important;
-}
+} */
 
 
 .gallery{
@@ -62,22 +69,23 @@ a{
     border-radius : 4px ;
     transition-duration : 0.5s;
     opacity: 0.9;
+    background-color: #091353 !important;
 
 }
 
 .btn:hover {
-    background-color : rgb(15, 69, 219) !important;
+    background-color : #081044 !important;
     color : white;
 }
 .brand-logo{
     font-size:32px !important;
 }
-.brand-logo:hover {
+/* .brand-logo:hover {
     text-shadow: 2px 3px 5px rgb(50, 116, 240);
-  }
+  } */
 
 
-.instafamheading{
+/* .instafamheading{
     text-shadow: 8px 8px 8px rgb(50, 116, 240);
-}
+} */
 

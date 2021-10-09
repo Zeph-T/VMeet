@@ -2,6 +2,8 @@ import React,{useState,useContext} from 'react';
 import {Link,useHistory } from 'react-router-dom';
 import {UserContext} from '../App';
 import M from 'materialize-css';
+import {api} from '../utilities';
+import ReactLogo from '../svgs/homePage.svg';
 
 
 
@@ -16,7 +18,7 @@ const SignIn = ()=>{
              M.toast({html:"invalid Email" , classes:"#43a047 red darken-1"})
             return
             }
-        fetch("/signin",{
+        fetch(api.BASE_URL + "/studentlogin",{
           method:"post",
           headers:{
               "Content-Type":"application/json"
@@ -33,7 +35,7 @@ const SignIn = ()=>{
                 M.toast({html: data.error, classes:"#e53935 red darken-1"})
             }
             else{
-                localStorage.setItem("jwt",data.token)
+                localStorage.setItem("jwt",data.user.authToken)
                 localStorage.setItem("user",JSON.stringify(data.user))
                 dispatch({type:"USER",payload:data.user})
                 M.toast({html:"signed in successfully" , classes:"#43a047 green darken-1"})
@@ -45,7 +47,7 @@ const SignIn = ()=>{
     }
     return (
         <div className="mycard">
-            <div className="card auth-card input-field">
+            <div className="card auth-card input-field" >
                 <h2 className="instafamheading">V-meet</h2>
                 <input
                 type='text'
@@ -60,7 +62,7 @@ const SignIn = ()=>{
                 onChange={(e)=>setPassword(e.target.value)}
                 />
                 
-            <button className="btn waves-effect waves-light #64b5f6 blue darken-1"
+            <button className="btn waves-effect waves-light #091353 blue darken-1"
             onClick={()=>PostData()} 
             >
                 Login
@@ -68,10 +70,8 @@ const SignIn = ()=>{
             <h5>
                 <Link to="/signup">Don't have an account ?</Link>
             </h5>
-                
-
-           
         </div>
+        <img src={ReactLogo} alt="React Logo" />
         </div>
     )
 
