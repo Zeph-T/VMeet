@@ -22,8 +22,8 @@ RUN apt-get install ffmpeg libsm6 libxext6  -y
 
 COPY app ./app
 
-EXPOSE 80
+EXPOSE 8080
 
 ENTRYPOINT [ "python" ]
 
-CMD ["app/app.py"]
+CMD ["app/app.py","run","--host","0.0.0.0"]
