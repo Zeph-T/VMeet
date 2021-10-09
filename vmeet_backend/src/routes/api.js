@@ -1,7 +1,8 @@
 const apiHelper = require('../api/controllers/apiHelper');
 const subjectApi = require('../api/controllers/subject');
 const studentApi = require('../api/controllers/Student');
-
+const facultyApi = require('../api/controllers/Faculty');
+const announcementApi = require('../api/controllers/announcement');
 module.exports = (router) =>{
     router.use(function(req,res,next){
         apiHelper.isAuthenticatedUser(req).then(isValid=>{

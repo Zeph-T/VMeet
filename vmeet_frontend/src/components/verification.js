@@ -1,8 +1,10 @@
-import React, { useRef } from 'react'
+import React, { useRef,useContext } from 'react'
 import Webcam from 'react-webcam'
 import axios from 'axios'
+import {UserContext} from '../App'
 
 function Verification() {
+  const {state,dispatch} = useContext(UserContext)
   const videoConstraints = {
     width: 1280,
     height: 700,
@@ -35,7 +37,7 @@ function Verification() {
       {
         first: imgSrc,
         second:
-          'https://pbs.twimg.com/profile_images/669103856106668033/UF3cgUk4_400x400.jpg',
+          state.photoUrl
       }
     )
 

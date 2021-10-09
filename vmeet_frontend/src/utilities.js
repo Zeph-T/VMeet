@@ -21,6 +21,8 @@ export const api = {
 }
 
 export const options = {
-    "Content-Type" : "application/json",
-    "AccessToken" : localStorage.getItem('AccessToken')
+    headers : {
+        "Content-Type" : "application/json",
+        "AccessToken" : localStorage.getItem("AccessToken")
+    }
 }

@@ -11,64 +11,56 @@ import Signup from './components/Signup'
 import { reducer, initialState } from './reducer/UserReducer'
 import Verification from './components/verification'
 import Video from './components/video'
+import { api,options } from './utilities'
+import axios from 'axios';
+import CustomSnackBar from './components/common/SnackBar'
 // import Allfollowpost from './components/Allfollowpost'
 
 export const UserContext = createContext()
 
-const Routing = () => {
+const Routing = (props) => {
   const history = useHistory()
   const { state, dispatch } = useContext(UserContext)
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'))
-    if (user) {
-      dispatch({ type: 'USER', payload: user })
+  useEffect(async () => {
+    console.log(options);
+    console.log('hi');
+    const user = await axios.get(api.BASE_URL + api.CHECK_FOR_LOGGED_IN_USER ,options);
+    if (user.data) {
+      dispatch({ type: 'USER', payload: user.data })
     } else {
       history.push('/signin')
     }
   }, [])
   return (
     <Switch>
-      <Route exact path='/'>
-        <Home />
-      </Route>
-      <Route exact path='/signin'>
-        <Signin />
-      </Route>
-      <Route exact path='/signup'>
-        <Signup />
-      </Route>
-      <Route exact path='/home'>
-        <Home />
-      </Route>
-      <Route exact path='/face'>
-        <Verification />
-      </Route>
-      <Route exact path='/:url'>
-        <Video />
-      </Route>
-      
-      {/* <Route exact path="/profile" >
-       <Profile />
-     </Route> */}
-      {/* <Route path="/create" >
-       <CreatePost />
-     </Route> */}
-      {/* <Route path="/profile/:userid" >
-       <UserProfile />
-     </Route> */}
-      {/* <Route path="/allfollowpost" >
-       <Allfollowpost />
-     </Route> */}
+      <Route exact path='/' render={(props)=><Home  {...props}/>} />
+      <Route exact path='/signin' render={(props)=><Signin  {...props}/>} />
+      <Route exact path='/signup' render={(props)=><Signup  {...props}/>} />
+      <Route exact path='/meet/:subjectId' render={(props)=><Verification  {...props}/>} />
+      <Route exact path='/join/:subjectId/:studentId' render={(props)=><Video  {...props}/>} />
     </Switch>
   )
 }
-function App() {
+function App(props) {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const oSnackBar = React.createRef();
+  let openSnackBar = (message) => {
+    if(oSnackBar.current){
+      oSnackBar.current.openSnackBar(message);
+    }
+  }
+  
+  let closeSnackBar = () => {
+    if(oSnackBar.current){
+      oSnackBar.current.closeSnackBar();
+    }
+  }
   return (
     <UserContext.Provider value={{ state, dispatch }}>
       <BrowserRouter>
-        <Navbar />
-        <Routing />
+        <Navbar {...props} openSnackBar={openSnackBar}/>
+        <Routing openSnackBar={openSnackBar} {...props}/>
+        <CustomSnackBar ref={oSnackBar} />
       </BrowserRouter>
     </UserContext.Provider>
   )

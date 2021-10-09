@@ -6,9 +6,17 @@ import WrappedButton from './common/WrappedButton';
 import { Dialog , DialogActions, DialogContent , DialogContentText , DialogTitle } from '@material-ui/core';
 import {Button} from '@material-ui/core';
 import { TextField } from '@material-ui/core';
-import { api ,options} from '../utilities';
+import { api } from '../utilities';
 import axios from 'axios';
-const Navbar = () => {
+
+
+const options = {
+  headers : {
+      "Content-Type" : "application/json",
+      "AccessToken" : localStorage.getItem("AccessToken")
+  }
+}
+const Navbar = (props) => {
   const searchModal = useRef(null)
   const {state,dispatch} = useContext(UserContext)
   const [userData,setuserData]=useState([])
@@ -66,14 +74,14 @@ const Navbar = () => {
       axios.post(api.BASE_URL + api.JOIN_SUBJECT_URL,data,options).then((response)=>{
         setJoiningInProgess(false);
         setOpen(false);
-        // props.openSnackBar("Joined Succesfully!");
+        props.openSnackBar("Joined Succesfully!");
       }).catch(err=>{
         setJoiningInProgess(false);
-        // props.openSnackBar(err);
+        props.openSnackBar(err);
       })
     }else{
       setJoiningInProgess(false);
-      // props.openSnackBar("The Subject Code will be exact 5 characters!");
+      props.openSnackBar("The Subject Code will be exact 5 characters!");
     }
   }
 
@@ -83,18 +91,21 @@ const Navbar = () => {
         let data  = {
           name : newSubject
         };
-        axios.post(api.BASE_URL + api.CREATE_SUBJECT_URL,data,options).then(()=>{
-          // props.openSnackBar('Subject created Successfully');
+        console.log("hi");
+        console.log(options);
+        axios.post(api.BASE_URL + api.CREATE_SUBJECT_URL,data,options).then((response)=>{
+          console.log(response);
+          props.openSnackBar('Subject created Successfully');
           setCreateInProgress(false);
           setOpenCreateDialog(false);
         }).catch(err=>{
           setCreateInProgress(false);
-          // props.openSnackBar(err.stack);
+          props.openSnackBar(err.stack);
           setOpenCreateDialog(false);
         })
       }else{
         setCreateInProgress(false);
-        // props.openSnackBar('Subject name should consists a minimum of 6 characters');
+        props.openSnackBar('Subject name should consists a minimum of 6 characters');
         setOpenCreateDialog(false);
       }
   }

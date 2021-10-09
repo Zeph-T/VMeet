@@ -28,8 +28,11 @@ app.get('/', (req, res) => {
   return res.send('connected!')
 })
 var auth = express.Router()
-require('./src/routes/auth.js')(auth)
-app.use('/auth', auth)
+require('./src/routes/auth.js')(auth);
+app.use('/auth', auth);
+var api = express.Router();
+require('./src/routes/api.js')(api)
+app.use('/api',api);
 // app.set('port', process.env.PORT || 8000)
 
 const port = 8000;

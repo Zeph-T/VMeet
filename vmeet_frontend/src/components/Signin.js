@@ -38,8 +38,7 @@ const SignIn = () => {
           if (data.data.error) {
             M.toast({ html: data.error, classes: "#e53935 red darken-1" });
           } else {
-            localStorage.setItem("jwt", data.data.authToken);
-            localStorage.setItem("user", JSON.stringify(data.data));
+            localStorage.setItem("AccessToken", data.data.authToken);
             dispatch({ type: "USER", payload: data.data });
             M.toast({
               html: "signed in successfully",
@@ -62,8 +61,7 @@ const SignIn = () => {
         if (data.data.error) {
           M.toast({ html: data.error, classes: "#e53935 red darken-1" });
         } else {
-          localStorage.setItem("jwt", data.data.authToken);
-          localStorage.setItem("user", JSON.stringify(data.data));
+          localStorage.setItem("AccessToken", data.data.authToken);
           dispatch({ type: "USER", payload: data.data });
           M.toast({
             html: "signed in successfully",

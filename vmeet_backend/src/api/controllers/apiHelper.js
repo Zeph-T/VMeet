@@ -156,7 +156,7 @@ const isAdmin = (req,res,next)=>{
 
 const isAuthenticatedUser=(req)=>{
     var deferred = Q.defer();
-    this.validateToken(req.headers.accesstoken,TokenTypes.authToken).then(response=>{
+    validateToken(req.headers.accesstoken,TokenTypes.authToken).then(response=>{
         if(response.isValid){
             req.user = response.payload;
             if(!response.payload.isFaculty){
