@@ -18,8 +18,12 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { UserContext } from '../App';
 import { api } from "../utilities";
-import {options} from "../utilities";
-
+const options = {
+  headers : {
+      "Content-Type" : "application/json",
+      "AccessToken" : localStorage.getItem("AccessToken")
+  }
+}
 
 
 const drawerWidth = 350;
@@ -75,30 +79,30 @@ function Home(props){
     // const upcomingAssignments = state.upcomingAssignments;
 
     useEffect (()=>{
-      fetch(api.BASE_URL+api.GET_STUDENTS_SUBJECT_URL,{
-        method:'get',
-        headers: options
-      }).then(res=>res.json())
-      .then(data => {
-        console.log(data);
-        setStudentSubjects(data);
-      })
-      .catch(err => console.log(err))
-    
+      if(!state.isAdmin){
+        fetch(api.BASE_URL+api.GET_STUDENTS_SUBJECT_URL,{
+          method:'get',
+          headers: options
+        }).then(res=>res.json())
+        .then(data => {
+          console.log(data);
+          setStudentSubjects(data);
+        })
+        .catch(err => console.log(err))
+      
+      }else{
+        fetch(api.BASE_URL+api.GET_FACULTY_SUBJECT_URL,{
+          method:'get',
+          headers: options
+        }).then(res=>res.json())
+        .then(data => {
+          console.log(data);
+          setFacultySubjects(data);
+        })
+        .catch(err => console.log(err))
+      }
     },[])
-    
-    useEffect (()=>{
-      fetch(api.BASE_URL+api.GET_FACULTY_SUBJECT_URL,{
-        method:'get',
-        headers: options
-      }).then(res=>res.json())
-      .then(data => {
-        console.log(data);
-        setFacultySubjects(data);
-      })
-      .catch(err => console.log(err))
-    
-    },[])
+
 
     const handleDrawerOpen = () => {
       setDrawerOpen(true);
