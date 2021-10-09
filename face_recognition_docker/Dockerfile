@@ -6,7 +6,19 @@ WORKDIR /usr/src/app
 
 COPY requirements.txt ./
 
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip
+
+RUN pip install flask
+RUN pip install flask_cors
+RUN pip install waitress
+RUN pip install face-compare
+RUN pip uninstall tensorflow -y
+RUN pip install tensorflow-cpu==2.6.0
+RUN pip install intel-tensorflow==2.6.0
+RUN pip install opencv-python
+
+RUN apt-get update
+RUN apt-get install ffmpeg libsm6 libxext6  -y
 
 COPY app ./app
 
