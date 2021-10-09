@@ -1,212 +1,191 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {UserContext} from '../App'
-import {Link} from 'react-router-dom'
-import M from 'materialize-css';
+import React,{useEffect,useState,useContext} from 'react'
+import Container from '@material-ui/core/Container'
+import ClassesGrid from './homeChildComp/ClassesGrid';
+import MainCompHeader from './homeChildComp/ComponentHeader';
+import { Drawer } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+import Hidden from '@material-ui/core/Hidden';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import moment from 'moment-timezone';
+import ListItemText from '@material-ui/core/ListItemText';
+import { LinearProgress } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import IconButton from '@material-ui/core/IconButton';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { UserContext } from '../App';
+import { api } from "../utilities";
+import {options} from "../utilities";
 
-const Home = ()=>{
-    const [data,setData] = useState([])
+
+
+const drawerWidth = 350;
+export const useStyles = makeStyles((theme) => ({
+  hide: {
+      display: 'none',
+  },
+  drawer: {
+      width: drawerWidth,
+      flexShrink: 0,
+  },
+  drawerPaper: {
+      width: drawerWidth,
+  },
+  drawerHeader: {
+      display: 'flex',
+      alignItems: 'center',
+      padding: theme.spacing(0, 1),
+      // necessary for content to be below app bar
+      ...theme.mixins.toolbar,
+      justifyContent: 'center',
+  },
+  drawerHeaderText: {
+    textAlign : 'center'
+  },
+  listItemHeader: {
+      fontWeight: 'bold',
+  },
+  listItemTextField: {
+      width: '300px'
+  },
+  assignmentText : {
+    marginTop : '2rem',
+    textAlign : 'center'
+  }
+}));
+
+function Home(props){
     const {state,dispatch} = useContext(UserContext)
-    useEffect(()=>{
-        fetch('/allpost' , {
-            headers:{
-                "Authorization":"Bearer " + localStorage.getItem("jwt")
-            }
-        }).then(res=>res.json())
-        .then(result => {
-            console.log(result)
-            setData(result.posts)
-        })
+    const classes = useStyles();
+    const theme = useTheme();
+    let subjects = [];
+    const [drawerOpen, setDrawerOpen] = React.useState(false);
+    const [facultySubjects,setFacultySubjects] = useState('');
+    const [studentSubjects,setStudentSubjects] = useState('');
+    // if(state.user.isAdmin){
+    //   subjects = state.facultySubjects;
+    // }
+    // else{
+    //   subjects  = state.studentSubjects;
+    // }
+    // const schedule = state.schedule;
+    // const upcomingAssignments = state.upcomingAssignments;
+
+    useEffect (()=>{
+      fetch(api.BASE_URL+api.GET_STUDENTS_SUBJECT_URL,{
+        method:'get',
+        headers: options
+      }).then(res=>res.json())
+      .then(data => {
+        console.log(data);
+        setStudentSubjects(data);
+      })
+      .catch(err => console.log(err))
+    
+    },[])
+    
+    useEffect (()=>{
+      fetch(api.BASE_URL+api.GET_FACULTY_SUBJECT_URL,{
+        method:'get',
+        headers: options
+      }).then(res=>res.json())
+      .then(data => {
+        console.log(data);
+        setFacultySubjects(data);
+      })
+      .catch(err => console.log(err))
+    
     },[])
 
-    const likePost = (id)=>{
-        fetch('/like',{
-            method:"put",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer "+localStorage.getItem("jwt")
-            },
-            body:JSON.stringify({
-                postId:id
-            })
-        }).then(res=>res.json())
-        .then(result=>{
-            console.log(result)
-            const newData = data.map(item=>{
-                if(item._id==result._id){
-                    return result
-                }else{
-                    return item
-                }
-            })
-            setData(newData)
-        }).catch(err=>{
-            console.log(err)
-        })
-    }
-    const dislikePost = (id)=>{
-        fetch('/dislike',{
-            method:"put",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer "+localStorage.getItem("jwt")
-            },
-            body:JSON.stringify({
-                postId:id
-            })
-        }).then(res=>res.json())
-        .then(result=>{
-            console.log(result)
-            const newData = data.map(item=>{
-                if(item._id==result._id){
-                    return result
-                }else{
-                    return item
-                }
-            })
-            setData(newData)
-        }).catch(err=>{
-            console.log(err)
-        })
-    }
+    const handleDrawerOpen = () => {
+      setDrawerOpen(true);
+    };
+  
+    const handleDrawerClose = () => {
+      setDrawerOpen(false);
+    };
 
-    const aComment = (text,postId) =>{
-        fetch('/comment',{
-            method:"put",
-            headers:{
-                "Content-Type":"application/json",
-                "Authorization":"Bearer "+localStorage.getItem("jwt")
-            },
-            body:JSON.stringify({
-               postId,
-               text
-            })
-        }).then(res=>res.json())
-        .then(result=>{
-            console.log(result)
-            const newData = data.map(item=>{
-                if(item._id==result._id){
-                    return result
-                }else{
-                    return item
-                }
-            })
-            setData(newData)
-        }).catch(err=>{
-            console.log(err)
-        })
-    }
-
-    const deletePost = (postid)=>{
-        fetch(`/deletepost/${postid}`,{
-            method:"delete",
-            headers:{
-                Authorization:"Bearer "+localStorage.getItem("jwt")
+    // useEffect(()=>{
+    //   setLoading(true);
+    //   dispatch(userActions.checkForLoggedInUser()).then((response)=>{
+    //     setLoading(false);
+    //   }).catch(err=>{
+    //     localStorage.removeItem('AccessToken');
+    //   })
+    // },[state.user]);
+    // if(loading === true){
+    //   return (
+    //     <div className="verticalCenterAligned">
+    //       <h2>LOADING YOUR DATA</h2>
+    //       <LinearProgress />
+    //     </div>
+    //   )
+    // }
+  return (
+    <div className="home">
+      <Drawer 
+        className={classes.drawer}
+        variant="persistent"
+        anchor="right"
+        open={drawerOpen}
+        onClose={handleDrawerClose}
+        style={{marginTop : '200'}}
+        classes={{
+          paper : classes.drawerPaper
+        }}
+        >
+          <div className={classes.drawerHeader}>
+            <Typography variant="h6" className={classes.drawerHeaderText}>
+              My Schedule 
+            </Typography>
+            <IconButton onClick={handleDrawerClose}>
+                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+          {
+            // schedule && schedule.map((oClass)=> (
+            //   <ListItem key={oClass._id} style={{flexDirection : 'column', justifyContent : 'center' , alignItems : 'center',marginTop : '1rem',borderRadius : '1rem',marginLeft : '0.5rem' , marginRight : '0.5rem'}}>
+            //     <ListItemText primary={oClass.subjectName} />
+            //     {/* <ListItemText secondary={"Scheduled at: " +  moment(new Date(oClass.scheduledAt)).format('LLL') }/> */}
+            //     <Typography>{moment(new Date(oClass.scheduledAt)).format('LLL')}</Typography>
+            //   </ListItem>
+            // ))
+          }
+        </List>
+        <Divider />
+        <Typography variant="h6" className={classes.assignmentText}>
+              My Upcoming Assignments
+            </Typography>
+            {
+              // upcomingAssignments === undefined || upcomingAssignments.length == 0 ? <Typography className={classes.assignmentText}>
+              //   No Assignments at the Moment!
+              // </Typography> : (
+              //             <List>
+              //             {
+              //               upcomingAssignments && upcomingAssignments.map((oAsg)=>(
+              //                 <ListItem key={oAsg._id} style={{flexDirection : 'column', justifyContent : 'center' , alignItems : 'center',marginTop : '1rem',borderRadius : '1rem',marginLeft : '0.5rem' , marginRight : '0.5rem'}}>
+              //                 <ListItemText primary={oAsg.name} />
+              //                 {/* <ListItemText secondary={"Scheduled at: " +  moment(new Date(oClass.scheduledAt)).format('LLL') }/> */}
+              //                 <Typography>{"Deadline " + moment(new Date(oAsg.deadline)).format('LLL')}</Typography>
+              //               </ListItem>
+              //               ))
+              //             }
+              //           </List>
+              // )
             }
-        }).then(res=>res.json())
-        .then(result=>{
-            console.log(result)
-            const newData = data.filter(item=>{
-                return item._id !== result._id
-            })
-            setData(newData)
-            M.toast({html: 'Post deleted', classes:"#e53935 red darken-1"})
-        })
-    }
-    const deleteComment = (...props) => {
-       fetch(`deletecomment/${props[1]}/${props[0]}`,{
-        method:"delete",
-        headers:{
-            Authorization:"Bearer "+localStorage.getItem("jwt")
-        }
-       }).then(res => res.json())
-       .then(result => {
-           const newData = data.map(item => {
-               if (item._id == result._id){
-                return result
-               }
-               else{
-                return item
-               }  
-           })
-           setData(newData)
-           M.toast({html: 'Comment deleted', classes:"#e53935 red darken-1"})
-       }).catch(err=>{
-        console.log(err)
-    })
-    }
-
-    return (
-        <div className="home">
-    {
-        data.map(item=>{
-            return(
-                <div className="card home-card"  key={item._id}>
-                <h5 style ={{padding:"10px"}}> <Link to ={item.postedBy._id !== state._id ? "/profile/"+item.postedBy._id : "/profile"}> {item.postedBy.name} </Link> {item.postedBy._id == state._id
-                && <i className="material-icons" 
-                style={{
-                    float:"right"
-                }}
-                onClick = {()=>deletePost(item._id)}
-                >delete</i>
-                 } </h5>
-
-                <div className="card-image" >
-                    <img src={item.photo}/>
-                </div>
-                <div className="card-content">
-                    
-                    {item.likes.includes(state._id)
-                    ?<div>
-                    <i className="material-icons" style={{color:"red"}}
-                    onClick={()=>{dislikePost(item._id)}} 
-                    >favorite</i>
-                    
-                     </div>
-                     :
-                     <div>
-                     <i className="material-icons" 
-                     onClick={()=>{likePost(item._id)}}
-                     >favorite_border</i>
-                     </div>
-
-                    }
-                    <h6> {item.likes.length} likes  </h6>
-                    <h6> {item.title} </h6>
-                    <p> {item.body} </p>
-                    {
-                        item.comments.map(record=>{
-                             return(
-                                 <div>
-                                    <h6 key={record._id}><span style={{fontWeight:"500"}}>{record.postedBy.name}</span> {record.text} 
-                                    
-                                    {record.postedBy._id == state._id
-                                    && <i className="material-icons" 
-                                    style={{
-                                        float:"right"
-                                    }}
-                                    onClick = {()=>deleteComment(record._id, item._id)}
-                                    >delete</i>
-                                    } 
-                                    </h6> 
-                                 </div>    
-                                
-                             )
-                        })
-                    } 
-                    <form onSubmit={(e)=>{
-                        e.preventDefault()
-                        aComment(e.target[0].value,item._id)
-                    }}>
-                    <input type="text" placeholder="add a comment" />
-
-                    </form>
-                   
-                </div>
-            </div>
-            )
-        })
-    }      
+      </Drawer>
+    <Container maxWidth={"xl"}>
+        <br />
+        <MainCompHeader handleDrawerOpen={handleDrawerOpen} />
+        <ClassesGrid subjects={subjects} />
+    </Container>
     </div>
-    )}
+  )
+}
 
 export default Home
