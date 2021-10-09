@@ -23,7 +23,11 @@ const FacultySchema = mongoose.Schema({
     photoUrl : {
         type:String,
         required:true
-    }
+    },
+    teachingSubjects : [{
+        type:mongoose.Types.ObjectId,
+        ref : 'Subject'
+    }],
 })
 
 

@@ -1,6 +1,8 @@
-const Student = require('../models/student');
+const Faculty = require('../models/faculty');
 const {validateUser,validateUserEmail} = require('./apiHelper');
 const axios = require('axios');
+
+
 const signup = (req,res)=>{
     try{
         let userInfo = req.body;
@@ -18,22 +20,23 @@ const signup = (req,res)=>{
                 return response.data;
             }).then(function(isDisposedData){
                 if(!isDisposedData.disposable){
-                    validateUserEmail(userInfo.email,true,true).then(isValid=>{
+                    validateUserEmail(userInfo.email,false,true).then(isValid=>{
                         if(isValid){
-                            let newStudent = new Student;
-                            newStudent.name = userInfo.name;
-                            newStudent.email = userInfo.email;
-                            newStudent.photoUrl = userInfo.photoUrl;
-                            newStudent.password = newStudent.generateHash(userInfo.password);
-                            newStudent.save(function(err){
+                            let newFaculty = new  Faculty;
+                            newFaculty.name = userInfo.name;
+                            newFaculty.email = userInfo.email;
+                            newFaculty.photoUrl = userInfo.photoUrl;
+                            newFaculty.password = newFaculty.generateHash(userInfo.password);
+                            newFaculty.save(function(err){
                                 if(err){
                                     return res.status(400).send({error:err.stack});
                                 }else{
-                                    res.status(200).send({message : 'User Created!'});
+                                    return res.status(200).send({message : 'Faculty Created!'});
+
                                 }
                             })
                         }else{
-                            return res.status(408).send({error : 'Cannot create an Email with this Email!'})
+                            return res.status(400).send({error : 'Error Occured'});
                         }
                     }).catch(err=>{
                         return res.status(400).send({error : err.stack});
@@ -49,20 +52,19 @@ const signup = (req,res)=>{
     }
 }
 
-const login = (req,res)=>{
+
+
+const login = (req,res) => {
     try{
         let userInfo = req.body;
         if(!userInfo || !userInfo.email || !userInfo.password){
             return res.status(400).send({error : 'Missing Fields!'});
         }
-        Student.findOne({
+        Faculty.findOne({
             email : userInfo.email
         }).then(user=>{
-            if(!user){
-                return res.status(404).send({error : 'Email Id not found!'});
-            }
             if(user.validPassword(userInfo.password)){
-                validateUser(req,res,user,false);
+                validateUser(req,res,user,true);
             }else{
                 return res.status(404).send({error:'Password Invalid!'});
             }
@@ -76,20 +78,21 @@ const login = (req,res)=>{
 }
 
 const getAllSubjects = (req,res)=>{
-    try{
+    try{    
         if(req.user){
-            let classess = req.user.activeClasses.map(oClass=> mongoose.Types.ObjectId(oClass));
-            Subject.find({_id : {$in : classess}}).then(oClasses=>{
-                return res.status(200).send(oClasses);
+            Subject.find({_id : {$in : req.user.teachingSubjects}}).then(oSub=>{
+                return res.status(200).send(oSub);
             }).catch(err=>{
-                return res.status(400).send({error: err.stack});
+                return res.status(400).send({error : err.stack});
             })
+        }else{
+            throw 'Request User Missing';
         }
     }catch(err){
-        return res.status(400).send({error:err.stack});
+        return res.status(400).send({error : err});
     }
 }
-
+ 
 module.exports = {
     login,
     signup,

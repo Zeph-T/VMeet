@@ -23,13 +23,7 @@ app.use(bodyParser.json());
 app.get('/',(req,res)=>{
     return res.send("connected!");
 })
-// require('./src/routes/api.js')(api);
-// app.use('/api',api);
 var auth = express.Router();
-// auth.use((req,res,next)=>{
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   next();
-// })
 require('./src/routes/auth.js')(auth);
 app.use('/auth',auth);
 app.set('port',(process.env.PORT || 8000));
