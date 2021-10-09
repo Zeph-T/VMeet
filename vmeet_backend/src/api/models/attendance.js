@@ -10,13 +10,14 @@ const AttendanceSchema = mongoose.Schema({
         type : mongoose.Types.ObjectId,
         ref : 'Subject'
     },
-    facultyId : {
-        type :  mongoose.Types.ObjectId,
-        ref : 'Faculty'
-    },
-    studentsAttended : [{
-        type:mongoose.Types.ObjectId,
-        ref : 'Student'
+    attendees : [{
+        _id : {
+            type:mongoose.Types.ObjectId,
+            ref : 'Student'
+        },
+        duration : {
+            type:Date
+        }
     }]
 })
 

@@ -5,7 +5,7 @@ import axios from 'axios'
 function Verification() {
   const videoConstraints = {
     width: 1280,
-    height: 720,
+    height: 700,
     facingMode: 'user',
   }
   const webcamRef = useRef(null)
@@ -52,10 +52,10 @@ function Verification() {
         <h1> Capture your video for verification </h1>
         <Webcam
           audio={false}
-          height={300}
+          height={720}
           ref={webcamRef}
           screenshotFormat='image/jpeg'
-          width={300}
+          width={1280}
           videoConstraints={videoConstraints}
         />
       </div>
