@@ -5,13 +5,10 @@ const app = express()
 const bodyParser = require('body-parser')
 const path = require('path')
 let xss = require('xss')
-const mongoose = require('mongoose');
 const student = require('./src/api/models/student.js')
 const Attendance = require('./src/api/models/attendance');
 const mongoose = require('mongoose')
 
-let server = http.createServer(app)
-let io = require('socket.io')(server)
 require('dotenv').config();
 mongoose
   .connect(process.env.VMEET_DB_CONN_STRING, {
@@ -26,7 +23,7 @@ mongoose
   })
 
 app.use(bodyParser.json())
-
+app.use(cors());
 app.get('/', (req, res) => {
   return res.send('connected!')
 })

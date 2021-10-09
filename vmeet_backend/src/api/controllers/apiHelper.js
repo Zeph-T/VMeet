@@ -142,11 +142,61 @@ const checkForLoggedInUser = (req,res)=>{
     }
 }
 
+const isAdmin = (req,res,next)=>{
+    if(req.user){
+        if(req.user.isAdmin){
+            next();
+        }else{
+            return res.status(408).send({error : 'Access Forbidden !'})
+        }
+    }else{
+        return res.status(400).send({error : 'Login First!'});
+    }
+}
 
+const isAuthenticatedUser=(req)=>{
+    var deferred = Q.defer();
+    this.validateToken(req.headers.accesstoken,TokenTypes.authToken).then(response=>{
+        if(response.isValid){
+            req.user = response.payload;
+            if(!response.payload.isFaculty){
+                Student.findOne({email : req.user.email.toLowerCase()}).lean().then(user=>{
+                    if(!user){
+                        deferred.reject(false);
+                    }else{
+                        req.user = user;
+                        deferred.resolve(true);
+                    }
+                }).catch(err=>{
+                    deferred.reject(false);
+                })
+            }else{
+                Faculty.findOne({email : req.user.email.toLowerCase()}).lean().then(user=>{
+                    if(!user){
+                        deferred.reject(false);
+                    }else{
+                        req.user = user;
+                        deferred.resolve(true);
+                    }
+                }).catch(err=>{
+                    deferred.reject(false);
+                })
+            }
+
+        }else{
+            deferred.resolve(false);
+        }
+    }).catch(err=>{
+        deferred.resolve(false);
+    })
+    return deferred.promise;
+}
 
 module.exports = {
     checkForLoggedInUser,
     validateUser,
     validateToken,
-    validateUserEmail
+    validateUserEmail,
+    isAdmin,
+    isAuthenticatedUser
 }

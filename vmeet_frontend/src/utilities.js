@@ -1,26 +1,26 @@
 export const api = {
-    BASE_URL: 'http://localhost:8000',
-    LOGIN_URL: '/auth/login',
-    LOGOUT_URL: '/logout',
-    SIGNUP_URL: '/auth/signup',
-    CHECK_FOR_LOGGED_IN_USER: '/api/checkForLoggedInUser',
-    ACTIVATE_USER: '/auth/activateUser/',
-    GET_ITEMS_FOR_HOME_PAGE: '/api/itemsForHome',
-    GET_CATEGORY_ITEMS: '/api/category/',
-    GET_SEARCH_ITEMS: '/api/items?',
-    GET_PRODUCT: '/api/product/',
-    GET_EXTRACTED_ITEMS: '/api/getExtractedItems',
-    ADD_CART: '/api/addToCart',
-    ADD_TO_WISHLIST: '/api/addToWishlist',
-    GET_CART: '/api/getCart',
-    GET_WISHLIST: '/api/getWishList',
-    RESET_PASSWORD: '/auth/resetPassword',
-    VALIDATE_RESET_PASSWORD_TOKEN: '/auth/verifyPasswordToken',
-    FORGOT_PASSWORD: '/auth/forgotPassword',
-    REMOVE_ITEM_FROM_CART: '/api/removeItemsFromCart',
-    MAKE_PAYMENT: '/api/payment',
-    GET_PAST_ORDERS : '/api/getPastOrders',
-    REMOVE_ITEM_FROM_WISHLIST : '/api/removeItemFromWishlist',
-    ML_MODEL_API_HEROKU : "https://medzone-ml.herokuapp.com/getText",
-    ML_MODEL_API_LOCALHOST: 'http://localhost:5000/getText'
-  }
+    BASE_URL : 'http://localhost:8000/',
+    CHECK_FOR_LOGGED_IN_USER : "api/checkForLoggedInUser",
+    STUDENT_LOGIN_URL : 'auth/studentlogin',
+    FACULTY_LOGIN_URL : 'auth/facultylogin',
+    STUDENT_SIGNUP_URL : 'auth/studentsignup',
+    FACULTY_SIGNUP_URL : 'auth/facultysignup',
+    JOIN_SUBJECT_URL : 'api/joinSubject',
+    CREATE_SUBJECT_URL  : 'api/createSubject',
+    POST_ANNOUNCEMENT_URL : 'api/postAnnouncement',
+    POST_ASSIGNMENT_URL : 'api/postTestOrAssignment',
+    GET_SUBJECT_DATA_URL : 'api/getSubjectData/',
+    SCHEDULE_CLASS_URL  :'api/scheduleClass',
+    SUBMIT_ASSIGNMENT_URL : 'api/submitAssignment',
+    LOGOUT_URL  : 'auth/logout',
+    GET_FACULTY_SCHEDULE_URL : 'api/getFacultySchedule',
+    GET_STUDENT_SCHEDULE_URL  : 'api/getSchedule',
+    GET_STUDENTS_SUBJECT_URL  : 'api/getStudentSubjects',
+    GET_FACULTY_SUBJECT_URL : 'api/getFacultySubjects',
+    GET_UPCOMING_ASSIGNMENTS_URL  : 'api/getUpcomingAssignments'
+}
+
+export const options = {
+    "Content-Type" : "application/json",
+    "AccessToken" : localStorage.getItem('AccessToken')
+}
