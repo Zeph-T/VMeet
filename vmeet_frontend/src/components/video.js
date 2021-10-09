@@ -28,9 +28,7 @@ const videoConstraints = {
   facingMode: 'user',
 }
 const server_url =
-  process.env.NODE_ENV === 'production'
-    ? 'https://video.sebastienbiollo.com'
-    : 'http://localhost:4001'
+  'http://localhost:8000'
 
 var connections = {}
 const peerConnectionConfig = {
@@ -353,7 +351,7 @@ class Video extends Component {
   }
 
   connectToSocketServer = () => {
-    socket = io.connect(server_url, { secure: true })
+    socket = io.connect(server_url, { transports: ['websocket', 'polling', 'flashsocket'] });
 
     socket.on('signal', this.gotMessageFromServer)
 
