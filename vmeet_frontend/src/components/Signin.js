@@ -46,7 +46,8 @@ const SignIn = ()=>{
         )
     }
     return (
-        <div className="mycard">
+        <div style={{display:'flex', justifyContent:'center',margin: '2rem 0rem'}}>
+             <div className="mycard">
             <div className="card auth-card input-field" >
                 <h2 className="instafamheading">V-meet</h2>
                 <input
@@ -71,8 +72,13 @@ const SignIn = ()=>{
                 <Link to="/signup">Don't have an account ?</Link>
             </h5>
         </div>
-        <img src={ReactLogo} alt="React Logo" />
         </div>
+        <img src={ReactLogo} alt="React Logo" style={{width:'400px',height:'auto',margin:'3rem 5rem'}} />
+
+        </div>
+       
+          
+          
     )
 
 }
