@@ -11,7 +11,7 @@ const mongoose = require('mongoose')
 
 require('dotenv').config();
 mongoose
-  .connect(process.env.VMEET_DB_CONN_STRING, {
+  .connect('mongodb+srv://admin:Zeph2002@cluster0.tsrno.mongodb.net/vmeetDB', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

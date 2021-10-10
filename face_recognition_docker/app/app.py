@@ -1,16 +1,18 @@
 from flask import Flask
-from flask import request
+from flask import request;
 from flask.json import jsonify
 import model 
-from flask_cors import CORS
+from flask_cors import CORS,cross_origin
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app,supports_credentials = True)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route("/")
+# @cross_origin(headers=['Content-Type','Authorization'])
 def home():
     return "Hello World"
-
 @app.route("/api/distance", methods=['POST'])
+# @cross_origin(headers=['Content-Type','Authorization'])
 def distance():
     assert request.method == 'POST'
     data = request.get_json(force=True)

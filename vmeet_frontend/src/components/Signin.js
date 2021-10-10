@@ -186,7 +186,7 @@ const SignIn = () => {
                         onClick={PostData}
                         name="Login"
                         size="large"
-                        style={{ width: "100%", padding: "0.8rem", backgroundColor: '#081044', color: 'white', fontWeight: '600', }}
+                        style={{ width: "100%", padding: "0.8rem", backgroundColor: '#081044', color: 'white', fontWeight: '600',margin:'1rem 0' }}
                         icon=""
                     />
                     <h6>
