@@ -14,6 +14,7 @@ import Video from './components/video'
 import { api,options } from './utilities'
 import DetailScreen from './components/DetailScreen'
 import axios from 'axios';
+import M from 'materialize-css';
 import CustomSnackBar from './components/common/SnackBar'
 // import Allfollowpost from './components/Allfollowpost'
 
@@ -25,12 +26,19 @@ const Routing = (props) => {
   useEffect(async () => {
     console.log(options);
     console.log('hi');
-    const user = await axios.get(api.BASE_URL + api.CHECK_FOR_LOGGED_IN_USER ,options);
-    if (user.data) {
-      dispatch({ type: 'USER', payload: user.data })
+    fetch(api.BASE_URL + api.CHECK_FOR_LOGGED_IN_USER ,{
+      method:'get',
+      options
+    }).then(res => res.json()).then((data)=> {
+      if (data.error) {
+        M.toast({ html: data.error, classes: '#e53935 red darken-1' })
+        history.push('/signin')
     } else {
-      history.push('/signin')
+        dispatch({ type: 'USER', payload: data.user })
+        M.toast({ html: data.message, classes: '#43a047 green darken-1' })
     }
+    }).catch(err => console.log(err))
+  
   }, [])
   return (
     <Switch>
