@@ -99,10 +99,11 @@ const DetailScreen = (props) => {
               secondary={<h2 style={{ color: "white" }}>{classCode}</h2>}
               className={classes.classname}
             />
-            <Button onClick={joinClass}>JOIN CLASS</Button>
+            
           </ListItem>
         </List>
       </Container>
+      <Button onClick={joinClass} style={{backgroundColor: '#091353',margin:'1rem',padding:'1rem'}}><div style={{color:'white'}}><b>Join Classroom Meet</b></div></Button>
       <Container style={{ display: "flex", padding: "0", marginTop: "1.5rem" }}>
         <div className={classes.rightmenu}>
           <Container>

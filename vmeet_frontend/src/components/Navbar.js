@@ -38,14 +38,15 @@ const Navbar = (props) => {
       return (
         <div>
         {
-          !state.isAdmin ? <li key="4"><button className="btn #000 red darken-1" onClick={()=>setOpen(true)}> JOIN CLASS</button></li> : <li key="4"><button className="btn #000 red darken-1" onClick={()=>setOpenCreateDialog(true)}>CREATE CLASS</button></li>
+          !state.isAdmin ? <li key="4"><button className="btn #000" style={{backgroundColor:'#091353'}} onClick={()=>setOpen(true)}><b> JOIN CLASS</b></button></li> : <li key="4"><button className="btn #000" style={{backgroundColor:'#091353'}} onClick={()=>setOpenCreateDialog(true)}><b>CREATE CLASS</b></button></li>
         }
         <li key="5"><button 
-        className="btn #e53935 red darken-1"
+        className="btn"
         onClick={()=>{
           setopenLogout(true)
         }}
-        >  Logout
+        style={{backgroundColor:'#091353'}}
+        > <b> Logout </b>
         </button></li>
         </div>
       )

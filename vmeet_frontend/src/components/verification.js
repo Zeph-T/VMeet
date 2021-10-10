@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Webcam from 'react-webcam'
 import axios from 'axios'
 import {UserContext} from '../App'
+import M from "materialize-css";
 
 function Verification() {
   const { subjectId } = useParams(); 
@@ -43,28 +44,33 @@ function Verification() {
       }
     )
     console.log(value.data.distance);
-    if (parseFloat(value.data.distance) < 0.7) {
+    if (parseFloat(value.data.distance) < 1.3) {
+      M.toast({
+        html: "Face Recognition Successfull!",
+        classes: "#43a047 green darken-1",
+    });
       window.location.href = '/join/'+ subjectId
     } else {
-      console.log('flase')
+      M.toast({ html: "Face does NOT match!", classes: "#43a047 red darken-1" });
+      console.log('false')
     }
   }
 
   return (
     <>
       <div style={{ textAlign: 'center' }}>
-        <h1> Capture your video for verification </h1>
+        <h2> Capture your video for verification </h2>
         <Webcam
           audio={false}
-          height={720}
+          height={600}
           ref={webcamRef}
           screenshotFormat='image/jpeg'
-          width={1280}
+          width={1000}
           videoConstraints={videoConstraints}
         />
       </div>
-      <div style={{ textAlign: 'center' }}>
-        <button onClick={capture}>Capture</button>
+      <div style={{ textAlign: 'center', }}>
+        <button className='btn' onClick={capture} style={{margin:'1rem',backgroundColor:'#091353',color:'white'}}><b>Capture</b></button>
       </div>
     </>
   )

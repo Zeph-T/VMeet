@@ -134,9 +134,13 @@ const AnnouncementList = (props) => {
         {/* </ListItem> */}
         {
           announcements === undefined || announcements && announcements.length == 0 ? 
-          <div>
-            <img style={{maxWidth : '35rem',maxHeight : '40rem'}} src={noAnnouncementLogo} alt="logo" />
-          </div> :
+          <div style={{display:'flex', flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+            
+            <div style={{display:'flex',justifyContent:'center'}}>
+            <img style={{maxWidth : '35rem',maxHeight : '40rem',marginBottom:'2rem'}} src={noAnnouncementLogo} alt="logo" />
+          </div>
+            </div>
+           :
           announcements.map((ann) => {
           return (
             <>
