@@ -8,7 +8,6 @@ import Hidden from '@material-ui/core/Hidden';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import moment from 'moment-timezone';
 import ListItemText from '@material-ui/core/ListItemText';
 import { LinearProgress } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography';
@@ -17,6 +16,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { UserContext } from '../App';
+import axios from 'axios';
 import { api } from "../utilities";
 const options = {
   headers : {
@@ -65,10 +65,10 @@ function Home(props){
     const {state,dispatch} = useContext(UserContext)
     const classes = useStyles();
     const theme = useTheme();
-    let subjects = [];
     const [drawerOpen, setDrawerOpen] = React.useState(false);
     const [facultySubjects,setFacultySubjects] = useState('');
     const [studentSubjects,setStudentSubjects] = useState('');
+    const [subjects,setSubjects] = useState([]);
     // if(state.user.isAdmin){
     //   subjects = state.facultySubjects;
     // }
@@ -78,28 +78,27 @@ function Home(props){
     // const schedule = state.schedule;
     // const upcomingAssignments = state.upcomingAssignments;
 
-    useEffect (()=>{
-      if(!state.isAdmin){
-        fetch(api.BASE_URL+api.GET_STUDENTS_SUBJECT_URL,{
-          method:'get',
-          headers: options
-        }).then(res=>res.json())
+    useEffect (async ()=>{
+      let user = await axios.get(api.BASE_URL + api.CHECK_FOR_LOGGED_IN_USER ,options);
+      user = user.data;
+      if(user && !user.isAdmin){
+        axios.get(api.BASE_URL+api.GET_STUDENTS_SUBJECT_URL,options)
         .then(data => {
-          console.log(data);
-          setStudentSubjects(data);
+          setSubjects(data.data);
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          console.log("Error occured");
+          console.log(err)
+        } )
       
-      }else{
-        fetch(api.BASE_URL+api.GET_FACULTY_SUBJECT_URL,{
-          method:'get',
-          headers: options
-        }).then(res=>res.json())
+      }else if(user){
+        axios.get(api.BASE_URL+api.GET_FACULTY_SUBJECT_URL,options)
         .then(data => {
-          console.log(data);
-          setFacultySubjects(data);
+          setSubjects(data.data);
         })
         .catch(err => console.log(err))
+      }else{
+        window.location = '/signin';
       }
     },[])
 

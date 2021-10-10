@@ -1,7 +1,7 @@
 const Faculty = require('../models/faculty');
 const {validateUser,validateUserEmail} = require('./apiHelper');
 const axios = require('axios');
-
+const Subject = require('../models/subject');
 
 const signup = (req,res)=>{
     try{

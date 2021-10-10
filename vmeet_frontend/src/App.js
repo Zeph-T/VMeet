@@ -12,6 +12,7 @@ import { reducer, initialState } from './reducer/UserReducer'
 import Verification from './components/verification'
 import Video from './components/video'
 import { api,options } from './utilities'
+import DetailScreen from './components/DetailScreen'
 import axios from 'axios';
 import CustomSnackBar from './components/common/SnackBar'
 // import Allfollowpost from './components/Allfollowpost'
@@ -37,7 +38,8 @@ const Routing = (props) => {
       <Route exact path='/signin' render={(props)=><Signin  {...props}/>} />
       <Route exact path='/signup' render={(props)=><Signup  {...props}/>} />
       <Route exact path='/meet/:subjectId' render={(props)=><Verification  {...props}/>} />
-      <Route exact path='/join/:subjectId/:studentId' render={(props)=><Video  {...props}/>} />
+      <Route exact path='/subject/:subjectId' render={(props)=> <DetailScreen {...props} />} />
+      <Route exact path='/join/:subjectId/:studentId' render={(props)=><Video props {...props}/>} />
     </Switch>
   )
 }
