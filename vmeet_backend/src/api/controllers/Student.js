@@ -1,6 +1,8 @@
 const Student = require('../models/student');
 const {validateUser,validateUserEmail} = require('./apiHelper');
 const axios = require('axios');
+const mongoose = require('mongoose');
+const Subject = require('../models/subject');
 const signup = (req,res)=>{
     try{
         let userInfo = req.body;
