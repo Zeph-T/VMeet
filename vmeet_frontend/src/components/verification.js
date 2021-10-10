@@ -1,9 +1,11 @@
 import React, { useRef,useContext } from 'react'
+import { useParams } from "react-router-dom";
 import Webcam from 'react-webcam'
 import axios from 'axios'
 import {UserContext} from '../App'
 
 function Verification() {
+  const { subjectId } = useParams(); 
   const {state,dispatch} = useContext(UserContext)
   const videoConstraints = {
     width: 1280,
@@ -40,9 +42,9 @@ function Verification() {
           state.photoUrl
       }
     )
-
-    if (parseFloat(value.data.distance) > 0.7) {
-      window.location.href = '/abcd'
+    console.log(value.data.distance);
+    if (parseFloat(value.data.distance) < 0.7) {
+      window.location.href = '/join/'+ subjectId
     } else {
       console.log('flase')
     }

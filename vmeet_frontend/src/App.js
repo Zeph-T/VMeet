@@ -39,7 +39,7 @@ const Routing = (props) => {
       <Route exact path='/signup' render={(props)=><Signup  {...props}/>} />
       <Route exact path='/meet/:subjectId' render={(props)=><Verification  {...props}/>} />
       <Route exact path='/subject/:subjectId' render={(props)=> <DetailScreen {...props} />} />
-      <Route exact path='/join/:subjectId/:studentId' render={(props)=><Video props {...props}/>} />
+      <Route exact path='/join/:subjectId' render={(props)=><Video props {...props}/>} />
     </Switch>
   )
 }

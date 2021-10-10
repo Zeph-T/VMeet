@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid'
 import Switch from '@material-ui/core/Switch'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Webcam from 'react-webcam'
-
+import axios from 'axios';
 const Signup = () => {
   const history = useHistory()
   const [name, setName] = useState('')
@@ -59,22 +59,18 @@ const Signup = () => {
       return
     }
     if (isAdmin) {
-      fetch(api.BASE_URL + api.FACULTY_SIGNUP_URL, {
-        method: 'post',
-        headers: options,
-        body: JSON.stringify({
-          name,
-          password,
-          email,
+      axios.post(api.BASE_URL + api.FACULTY_SIGNUP_URL, {
+          name : name,
+          password : password,
+          email : email,
           photoUrl: urlRef.current,
-        }),
-      })
-        .then((res) => res.json())
+        })
         .then((data) => {
+          data = data.data;
           if (data.error) {
             M.toast({ html: data.error, classes: '#e53935 red darken-1' })
           } else {
-            M.toast({ html: data.message, classes: '#43a047 green darken-1' })
+            M.toast({ html: "User Created", classes: '#43a047 green darken-1' })
             history.push('/signin')
           }
         })
@@ -82,28 +78,24 @@ const Signup = () => {
           console.log(err)
         })
     } else {
-      fetch(api.BASE_URL + api.STUDENT_SIGNUP_URL, {
-        method: 'post',
-        headers: options,
-        body: JSON.stringify({
-          name,
-          password,
-          email,
-          photoUrl: urlRef.current,
-        }),
+      axios.post(api.BASE_URL + api.STUDENT_SIGNUP_URL, {
+        name : name,
+        password : password,
+        email : email,
+        photoUrl: urlRef.current,
       })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            M.toast({ html: data.error, classes: '#e53935 red darken-1' })
-          } else {
-            M.toast({ html: data.message, classes: '#43a047 green darken-1' })
-            history.push('/signin')
-          }
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      .then((data) => {
+        data = data.data;
+        if (data.error) {
+          M.toast({ html: data.error, classes: '#e53935 red darken-1' })
+        } else {
+          M.toast({ html: "User Created", classes: '#43a047 green darken-1' })
+          history.push('/signin')
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     }
   }
 

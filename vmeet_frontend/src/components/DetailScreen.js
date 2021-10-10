@@ -58,6 +58,12 @@ const DetailScreen = (props) => {
   const [name, setName] = useState("");
   const [classCode, setClassCode] = useState("");
   const [faculty, setFaculty] = useState([]);
+
+  let joinClass = () => {
+      window.location = `/meet/${subjectId}/`
+  }
+
+
   useEffect(() => {
     axios
       .get(api.BASE_URL + api.GET_SUBJECT_DATA_URL + subjectId, options)
@@ -93,6 +99,7 @@ const DetailScreen = (props) => {
               secondary={<h2 style={{ color: "white" }}>{classCode}</h2>}
               className={classes.classname}
             />
+            <Button onClick={joinClass}>JOIN CLASS</Button>
           </ListItem>
         </List>
       </Container>
